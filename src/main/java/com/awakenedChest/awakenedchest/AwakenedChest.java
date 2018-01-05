@@ -13,19 +13,24 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.Sys;
 
+
 @Mod(modid = AwakenedChest.MODID, version = AwakenedChest.VERSION,useMetadata = true)
 public class AwakenedChest
 {
     public static final String MODID = "awakenedchest";
     public static final String VERSION = "1.0";
 
+    //Variable Declaration
+    AwakenedChestBlock awakenedChestBlock = new AwakenedChestBlock(Material.IRON);
+    //--------------------
+
     @EventHandler
     public void PreInit(FMLPreInitializationEvent event){
 
-        Vars.awakenedChestBlock.setCreativeTab(Vars.awakenedChestTab);
+        awakenedChestBlock.setCreativeTab(Vars.awakenedChestTab);
 
-        Vars.blockRegistry.register(Vars.awakenedChestBlock);
-        Vars.itemRegistry.register(new AwakenedItemBlock(Vars.awakenedChestBlock,null, Vars.PLAYER_NAME));
+        Vars.blockRegistry.register(awakenedChestBlock);
+        Vars.itemRegistry.register(new AwakenedItemBlock(awakenedChestBlock,null, null));
 
     }//void PreInit: Use for registration
 

@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -15,27 +16,22 @@ public class Vars {
         @Override
         public ItemStack getTabIconItem() {
 
-            //add a texture to the creative tab
-            return null;
-        }
+            //replace texture to the creative tab
+            return new ItemStack(Items.DIAMOND);
+
+        }//ItemStack getTabIconItem(): sets the tab icon
+
+        public String getTranslatedTabLabel(){ return "Awakened Chests"; }
+
     };
 
     //Constants----------------------------
     static String AwakenedChest_REGNAME = "awakenedChest";
-    static String PLAYER_NAME = Minecraft.getMinecraft().player.getName();
     //-------------------------------------
 
     //Registries---------------------------
     static IForgeRegistry<Block> blockRegistry = GameRegistry.findRegistry(Block.class);
     static IForgeRegistry<Item> itemRegistry = GameRegistry.findRegistry(Item.class);
     //-------------------------------------
-
-    //Blocks-------------------------------
-    static AwakenedChestBlock awakenedChestBlock = new AwakenedChestBlock(Material.IRON);
-    //-------------------------------------
-
-
-
-
-
+    
 }//Variable Declaration

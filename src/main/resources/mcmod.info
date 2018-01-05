@@ -7,8 +7,8 @@
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "Quantumech",
+  "authorList": ["Quantumech","xExileMage"],
+  "credits": "I coded it, Exile just sat around and told me what to make xd",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

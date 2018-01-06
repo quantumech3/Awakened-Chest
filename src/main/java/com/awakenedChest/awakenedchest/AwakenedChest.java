@@ -2,10 +2,13 @@ package com.awakenedChest.awakenedchest;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ChestRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityChestRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -31,6 +34,8 @@ public class AwakenedChest
 
         Vars.blockRegistry.register(awakenedChestBlock);
         Vars.itemRegistry.register(new AwakenedItemBlock(awakenedChestBlock,null, null));
+        ClientRegistry.bindTileEntitySpecialRenderer(AwakenedChestTileEntity.class,new AwakenedChestRenderer());
+
 
     }//void PreInit: Use for registration
 

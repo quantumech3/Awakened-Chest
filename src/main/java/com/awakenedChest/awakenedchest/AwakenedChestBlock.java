@@ -2,6 +2,7 @@ package com.awakenedChest.awakenedchest;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -23,6 +24,9 @@ public class AwakenedChestBlock extends BlockContainer{
     }//Constructor
 
     @Override
+    public boolean isOpaqueCube(IBlockState state) { return false; }
+
+    @Override
     public boolean isFlammable(IBlockAccess world, BlockPos pos, EnumFacing face) {return false;}
 
 
@@ -31,7 +35,7 @@ public class AwakenedChestBlock extends BlockContainer{
     public TileEntity createNewTileEntity(World worldIn, int meta) {
 
         //add inventory TileEntity to AwakenedChestBlock
-        return null;
+        return new AwakenedChestTileEntity();
 
     }//createNewTileEntity
 

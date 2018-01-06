@@ -33,5 +33,5 @@ public class Vars {
     static IForgeRegistry<Block> blockRegistry = GameRegistry.findRegistry(Block.class);
     static IForgeRegistry<Item> itemRegistry = GameRegistry.findRegistry(Item.class);
     //-------------------------------------
-    
+
 }//Variable Declaration

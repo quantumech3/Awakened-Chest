@@ -30,12 +30,14 @@ public class AwakenedChest
     @EventHandler
     public void PreInit(FMLPreInitializationEvent event){
 
+        //Set inital blocks creative tab, iterations with inventory dont have a creative tab set
         awakenedChestBlock.setCreativeTab(Vars.awakenedChestTab);
 
+        //Registering
         Vars.blockRegistry.register(awakenedChestBlock);
         Vars.itemRegistry.register(new AwakenedItemBlock(awakenedChestBlock,null, null));
         ClientRegistry.bindTileEntitySpecialRenderer(AwakenedChestTileEntity.class,new AwakenedChestRenderer());
-
+        //-----------
 
     }//void PreInit: Use for registration
 

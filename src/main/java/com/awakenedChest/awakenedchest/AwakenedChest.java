@@ -34,8 +34,11 @@ public class AwakenedChest
         awakenedChestBlock.setCreativeTab(Vars.awakenedChestTab);
 
         //Registering
+        GameRegistry.registerTileEntity(AwakenedChestTileEntity.class,"awakenedChestEntity");
         Vars.blockRegistry.register(awakenedChestBlock);
         Vars.itemRegistry.register(new AwakenedItemBlock(awakenedChestBlock,null, null));
+
+
         ClientRegistry.bindTileEntitySpecialRenderer(AwakenedChestTileEntity.class,new AwakenedChestRenderer());
         //-----------
 

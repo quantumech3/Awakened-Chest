@@ -51,22 +51,22 @@ public class AwakenedChestRenderer extends TileEntitySpecialRenderer {
 
         bindTexture(texture);
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x,y,z);
 
+        GlStateManager.translate((float) x + .5F, (float) y + 1F, (float) z + .5F);
 
-
-        //Makes the model right side up
-        GlStateManager.translate(1,1,0);
-        GlStateManager.rotate(180,0,0,1);
-        //-----------------------------
-
-        GlStateManager.scale(1,1,1);
         GlStateManager.pushMatrix();
-        //Rotate depending on how the player places it
 
-        GlStateManager.rotate(-Minecraft.getMinecraft().player.rotationYaw,0,1,0);
+        //Rotate depending on how the player places it
+        GlStateManager.rotate(180,0,0,1);
+
+        GlStateManager.rotate(tileEntity.rotationYaw,0,.2f,0);
         //--------------------------------------------
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(-.5,0,-.5);
         modelChest.renderAll();
+
+        GlStateManager.popMatrix();
         GlStateManager.popMatrix();
         GlStateManager.popMatrix();
     }//Rendering code goes here
@@ -75,6 +75,7 @@ public class AwakenedChestRenderer extends TileEntitySpecialRenderer {
     public void render(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         renderAwakenedChest((AwakenedChestTileEntity)te,x,y,z);
     }
+
 }//class AwakenedChestRenderer
 
 

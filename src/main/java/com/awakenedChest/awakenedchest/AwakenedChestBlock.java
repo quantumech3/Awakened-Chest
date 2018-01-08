@@ -44,7 +44,14 @@ public class AwakenedChestBlock extends BlockContainer{
     public TileEntity createNewTileEntity(World worldIn, int meta) {
 
         //add inventory TileEntity to AwakenedChestBlock
-        return new AwakenedChestTileEntity();
+
+        //This is done because you cant load player position at launch when there is no player in the world
+        AwakenedChestTileEntity tileEntity = new AwakenedChestTileEntity();
+        tileEntity.rotationYaw = Minecraft.getMinecraft().player.rotationYaw;
+        tileEntity.playerPos = Minecraft.getMinecraft().player.getPosition();
+        //-------------------------------------------------------------------------------------------------
+
+        return tileEntity;
 
     }//createNewTileEntity
 

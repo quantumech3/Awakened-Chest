@@ -10,6 +10,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import org.lwjgl.Sys;
 
 import javax.annotation.Nullable;
 
@@ -47,6 +48,7 @@ public class AwakenedChestBlock extends BlockContainer{
 
         //This is done because you cant load player position at launch when there is no player in the world
         AwakenedChestTileEntity tileEntity = new AwakenedChestTileEntity();
+
         tileEntity.rotationYaw = Minecraft.getMinecraft().player.rotationYaw;
         tileEntity.playerPos = Minecraft.getMinecraft().player.getPosition();
         //-------------------------------------------------------------------------------------------------

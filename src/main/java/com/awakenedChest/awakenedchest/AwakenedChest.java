@@ -2,6 +2,7 @@ package com.awakenedChest.awakenedchest;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.ChestRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityChestRenderer;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,6 +14,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.Sys;
 
@@ -34,6 +36,8 @@ public class AwakenedChest
         awakenedChestBlock.setCreativeTab(Vars.awakenedChestTab);
 
         //Registering
+        NetworkRegistry.INSTANCE.registerGuiHandler(this.MODID,new AwakenedChestGuiHandler());
+
         GameRegistry.registerTileEntity(AwakenedChestTileEntity.class,"awakenedChestEntity");
         Vars.blockRegistry.register(awakenedChestBlock);
         Vars.itemRegistry.register(new AwakenedItemBlock(awakenedChestBlock,null, null));
@@ -41,6 +45,8 @@ public class AwakenedChest
 
         ClientRegistry.bindTileEntitySpecialRenderer(AwakenedChestTileEntity.class,new AwakenedChestRenderer());
         //-----------
+
+
 
     }//void PreInit: Use for registration
 

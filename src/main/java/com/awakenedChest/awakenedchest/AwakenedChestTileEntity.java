@@ -1,47 +1,54 @@
 package com.awakenedChest.awakenedchest;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.Util;
-import net.minecraft.util.datafix.walkers.BlockEntityTag;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.lwjgl.Sys;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-import scala.collection.parallel.ParIterableLike;
-import sun.plugin.com.Utils;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.logging.Logger;
 
-public class AwakenedChestTileEntity extends TileEntityChest implements ICapabilityProvider {
+public class AwakenedChestTileEntity extends TileEntityChest implements ICapabilityProvider, ISidedInventory {
 
 
     BlockPos playerPos;
     float rotationYaw;
     int rotationAngle = 999;
-
-
-
     //The item handlers size is 6 because initally there are 3 container slots and 3 upgrade slots
-    IItemHandler itemHandler = new ItemStackHandler(6);
+    ItemStackHandler inventory = new ItemStackHandler(6){
+
+        @Nonnull
+        @Override
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+            return super.insertItem(slot, stack, simulate);
+        }
+
+        @Override
+        protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
+            return 1;
+        }//Stack size
+    };
+
+    @Override
+    public int getSizeInventory() {
+        return 6;
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
 
-
-
         rotationYaw = compound.getInteger("rotation");
+        inventory.deserializeNBT(compound.getCompoundTag("inventory"));
 
         super.readFromNBT(compound);
     }
@@ -52,28 +59,26 @@ public class AwakenedChestTileEntity extends TileEntityChest implements ICapabil
         NBTTagCompound n = new NBTTagCompound();
         this.writeToNBT(n);
         return new SPacketUpdateTileEntity(this.pos,getBlockMetadata(),n);
-    }
+    }//Needed server stuff
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         this.readFromNBT(pkt.getNbtCompound());
-    }
+    }//Needed server stuff
 
     @Override
     public NBTTagCompound getUpdateTag() {
         NBTTagCompound nbt = new NBTTagCompound();
         this.writeToNBT(nbt);
         return nbt;
-    }
+    }//Needed server stuff
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
 
         super.writeToNBT(compound);
-
+        compound.setTag("inventory", inventory.serializeNBT());
         compound.setInteger("rotation",Math.round(rotationYaw));
-
-
 
         return compound;
     }
@@ -96,9 +101,12 @@ public class AwakenedChestTileEntity extends TileEntityChest implements ICapabil
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
 
 
+
+
         if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
 
-            return (T)itemHandler;
+
+            return (T) inventory;
 
         }//If capability is item handler
 
@@ -106,4 +114,19 @@ public class AwakenedChestTileEntity extends TileEntityChest implements ICapabil
 
     }//getCapability()
 
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side) {
+        return new int[0];
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+        return false;
+    }
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+        return false;
+    }
 }//class AwakenedChestTileEntity

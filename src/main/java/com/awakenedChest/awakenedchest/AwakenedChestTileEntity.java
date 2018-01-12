@@ -20,7 +20,7 @@ import javax.annotation.Nullable;
 
 public class AwakenedChestTileEntity extends TileEntityChest implements ICapabilityProvider, ISidedInventory {
 
-
+    public boolean allowHoppers = false;
     BlockPos playerPos;
     float rotationYaw;
     int rotationAngle = 999;
@@ -84,49 +84,24 @@ public class AwakenedChestTileEntity extends TileEntityChest implements ICapabil
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
-
-            return true;
-
-        }//If capability is item handler
-
-        return false;
-
-    }//boolean hasCapabilty()
-
-    @Nullable
-    @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-
-
-
-
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
-
-
-            return (T) inventory;
-
-        }//If capability is item handler
-
-            return super.getCapability(capability,facing);
-
-    }//getCapability()
-
-
-    @Override
     public int[] getSlotsForFace(EnumFacing side) {
         return new int[0];
-    }
+    }//int[] getSlotsForFace()
 
     @Override
     public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
         return false;
     }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) { return allowHoppers; }//Allow hoppers is false right now
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) { return (T)inventory; }
+
 }//class AwakenedChestTileEntity

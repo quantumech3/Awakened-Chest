@@ -25,8 +25,7 @@ public class AwakenedChestContainer extends Container{
 
         inventory = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH);
 
-        System.out.println(MAX_X);
-        System.out.println(MAX_Y);
+
 
         //Upgrade slots are the first 3 slots
         for(int i = 0;i<amountOfUpgradeSlots;i++){
@@ -41,7 +40,7 @@ public class AwakenedChestContainer extends Container{
 
             addSlotToContainer(new ContainerSlot(inventory,i,MAX_X, -GAP_BETWEEN_UPGRADEANDCONTAINER_SLOTS +MAX_Y-(SLOT_WIDTH*i)));
 
-            System.out.println(getSlot(0).getSlotTexture());
+
         }//For: Make container slots
 
 

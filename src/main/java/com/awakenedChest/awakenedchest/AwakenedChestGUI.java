@@ -12,17 +12,14 @@ public class AwakenedChestGUI extends GuiContainer {
     public AwakenedChestGUI(IInventory playerinv, AwakenedChestTileEntity tileEntity) {
         super(new AwakenedChestContainer(playerinv,tileEntity));
 
-
-
         //Set dimensions before these
         SIZE_X = xSize; SIZE_Y = ySize;
         //---------------------------
 
-    }
+    }//Constructor
 
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {}
 
-    }
 }//class AwakenedChestGUI

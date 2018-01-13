@@ -25,7 +25,12 @@ public class UpgradeSlot extends SlotItemHandler{
         setBackgroundName(AwakenedChest.MODID + ":slottexture.png");
     }//Constructor
 
+    @Override
+    public boolean isItemValid(@Nonnull ItemStack stack) {
 
+        //add discrimination between upgrades and other stuff
+        return true;
+    }
 
 
     @Override public int getSlotStackLimit() {return 1;}

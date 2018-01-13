@@ -6,11 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -18,20 +20,16 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class AwakenedChestTileEntity extends TileEntityChest implements ICapabilityProvider, ISidedInventory {
+public class AwakenedChestTileEntity extends TileEntity implements ICapabilityProvider {
 
-    public boolean allowHoppers = false;
+
+    int amountOfUpgradeSlots = 3;
+    int amountOfContainerSlots = 3;
     BlockPos playerPos;
     float rotationYaw;
     int rotationAngle = 999;
     //The item handlers size is 6 because initally there are 3 container slots and 3 upgrade slots
-    ItemStackHandler inventory = new ItemStackHandler(6){
-
-        @Nonnull
-        @Override
-        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-            return super.insertItem(slot, stack, simulate);
-        }
+    ItemStackHandler inventory = new ItemStackHandler(amountOfContainerSlots+amountOfUpgradeSlots){
 
         @Override
         protected int getStackLimit(int slot, @Nonnull ItemStack stack) {
@@ -39,10 +37,31 @@ public class AwakenedChestTileEntity extends TileEntityChest implements ICapabil
         }//Stack size
     };
 
-    @Override
-    public int getSizeInventory() {
-        return 6;
-    }
+    public ItemStack[] GetFromUpgradeSlots(){
+
+        ItemStack[] output = new ItemStack[amountOfUpgradeSlots];
+
+        for(int i = 0; i<amountOfUpgradeSlots; i++){
+
+            output[i] = inventory.getStackInSlot(i);
+
+        }//append all items from upgrade slots into output
+
+        return output;
+    }//GetFromUpgradeSlots(): This gets all items from upgrade slots
+
+    public ItemStack[] GetFromContainerSlots(){
+
+        ItemStack[] output = new ItemStack[amountOfUpgradeSlots];
+
+        for(int i = amountOfUpgradeSlots; i<amountOfUpgradeSlots+amountOfContainerSlots; i++){
+
+            output[i] = inventory.getStackInSlot(i);
+
+        }//append all items from container slots into output
+
+        return output;
+    }//GetFromUpgradeSlots(): This gets all items from container slots
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -84,24 +103,21 @@ public class AwakenedChestTileEntity extends TileEntityChest implements ICapabil
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
-        return new int[0];
-    }//int[] getSlotsForFace()
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+
+        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
+         return (T)inventory;
+        }
+        return super.getCapability(capability,facing);
+    }//GetCapability()
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        return true;
-    }
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY){
+            return true;
+        }
+        return super.hasCapability(capability,facing);
+    }//bool HasCapability(): set whether it can take stuff from hoppers
 
-    @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-        return false;
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) { return allowHoppers; }//Allow hoppers is false right now
-
-    @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) { return (T)inventory; }
 
 }//class AwakenedChestTileEntity

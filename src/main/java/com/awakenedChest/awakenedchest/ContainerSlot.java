@@ -9,12 +9,12 @@ import javax.annotation.Nonnull;
 
 public class ContainerSlot extends SlotItemHandler{
 
+    //todo make discrimination between container blocks and other stuff
+
     public ContainerSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition) {
         super(itemHandler, index, xPosition, yPosition);
         setBackgroundName(AwakenedChest.MODID + ":slottexture.png");
     }//Constructor
-
-
 
 
     @Override public int getSlotStackLimit() {return 1;}

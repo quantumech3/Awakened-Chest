@@ -42,6 +42,7 @@ public class AwakenedChest
     @Mod.EventHandler
     public void PreInit(FMLPreInitializationEvent event){
 
+
         //Set inital blocks creative tab, iterations with inventory dont have a creative tab set
         awakenedChestBlock.setCreativeTab(Vars.awakenedChestTab);
 
@@ -56,7 +57,6 @@ public class AwakenedChest
         ClientRegistry.bindTileEntitySpecialRenderer(AwakenedChestTileEntity.class,new AwakenedChestRenderer());
         //-----------
 
-    //fixme Registry registration might be wrong
             MinecraftForge.EVENT_BUS.register(new EventHandler());
 
     }//void PreInit: Use for registration

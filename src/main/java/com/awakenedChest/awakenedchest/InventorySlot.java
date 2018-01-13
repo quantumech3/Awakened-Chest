@@ -18,7 +18,6 @@ public class InventorySlot extends SlotItemHandler{
 
 
 
-
     @Override public int getSlotStackLimit() {return stackSize;}
 
     @Override public int getItemStackLimit(@Nonnull ItemStack stack) {return stackSize;}

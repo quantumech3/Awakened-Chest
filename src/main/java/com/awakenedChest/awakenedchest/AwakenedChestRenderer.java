@@ -1,15 +1,18 @@
 package com.awakenedChest.awakenedchest;
 
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelChest;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.ItemHandlerHelper;
 import org.lwjgl.Sys;
 
-//TODO make chest be place at a rotation relative to how you place it
+
 public class AwakenedChestRenderer extends TileEntitySpecialRenderer {
 
 
@@ -33,8 +36,6 @@ public class AwakenedChestRenderer extends TileEntitySpecialRenderer {
         double blockZ = Math.abs(tileEntBlockPos.getPos().getZ());
 
 
-
-        //fixme might need to reverse the subtraction
         return GetDistance(
                 playerX - blockX,
                 playerY - blockY,
@@ -49,11 +50,12 @@ public class AwakenedChestRenderer extends TileEntitySpecialRenderer {
 
     public void renderAwakenedChest(AwakenedChestTileEntity tileEntity,double x,double y, double z){
 
+
         bindTexture(texture);
         GlStateManager.pushMatrix();
 
         GlStateManager.translate((float) x + .5F, (float) y + 1F, (float) z + .5F);
-
+        BlockFurnace
         GlStateManager.pushMatrix();
 
         //Rotate depending on how the player places it

@@ -23,7 +23,7 @@ public class AwakenedChestContainer extends Container{
 
     public AwakenedChestContainer(IInventory playerInv, AwakenedChestTileEntity tileEntity) {
 
-        inventory = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,EnumFacing.NORTH);
+        inventory = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
 
 
         //Upgrade slots are the first 3 slots

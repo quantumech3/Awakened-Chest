@@ -15,7 +15,7 @@ import org.lwjgl.Sys;
 
 public class AwakenedChestRenderer extends TileEntitySpecialRenderer {
 
-
+    //todo make chest animation for when chest is opened
 
     double GetDistance(double x, double y, double z){
         return Math.sqrt(
@@ -55,7 +55,7 @@ public class AwakenedChestRenderer extends TileEntitySpecialRenderer {
         GlStateManager.pushMatrix();
 
         GlStateManager.translate((float) x + .5F, (float) y + 1F, (float) z + .5F);
-        BlockFurnace
+
         GlStateManager.pushMatrix();
 
         //Rotate depending on how the player places it

@@ -6,6 +6,8 @@ import net.minecraft.inventory.IInventory;
 
 public class AwakenedChestGUI extends GuiContainer {
 
+    //add white background to gui
+
     //These are here to be accessed by the container
     public static int SIZE_X,SIZE_Y;
 

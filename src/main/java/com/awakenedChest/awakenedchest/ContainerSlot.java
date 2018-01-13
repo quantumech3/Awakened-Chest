@@ -21,6 +21,8 @@ public class ContainerSlot extends SlotItemHandler{
 
     @Override public int getItemStackLimit(@Nonnull ItemStack stack) {return 1;}
 
+
+
     @Override public TextureAtlasSprite getBackgroundSprite() { return AwakenedChest.containerSlotTexture; }
 
 }//class UpgradeSlot

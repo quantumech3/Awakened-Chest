@@ -18,7 +18,7 @@ public class AwakenedChestContainer extends Container{
     final int MAX_X = AwakenedChestGUI.SIZE_X;
     final int MAX_Y = AwakenedChestGUI.SIZE_Y;
     final int SLOT_WIDTH = 16;
-
+    final int INVENTORY_WIDTH = 20;
     final int GAP_BETWEEN_UPGRADEANDCONTAINER_SLOTS = SLOT_WIDTH*2;
 
     public AwakenedChestContainer(IInventory playerInv, AwakenedChestTileEntity tileEntity) {
@@ -41,8 +41,22 @@ public class AwakenedChestContainer extends Container{
 
         }//For: Make container slots
 
+        if(tileEntity.amountOfInventorySlots > 0) {
+            for (int i = 0; i < tileEntity.amountOfInventorySlots; i++) {
 
+                addSlotToContainer(
+                        new InventorySlot(
+                        inventory,
+                        amountOfUpgradeSlots+amountOfContainerSlots+i,
 
+                        (i%INVENTORY_WIDTH)*SLOT_WIDTH,
+                        ((int)Math.floor(i/INVENTORY_WIDTH))*SLOT_WIDTH
+                        )
+                );
+
+            }//For: make inventory slots
+
+        }//Make sure that inventory slots exist at all
 
     }//Constructor
 

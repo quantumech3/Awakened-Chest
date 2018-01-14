@@ -3,9 +3,11 @@ package com.awakenedChest.awakenedchest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import org.lwjgl.Sys;
 
 public class AwakenedChestContainer extends Container{
 
@@ -13,7 +15,7 @@ public class AwakenedChestContainer extends Container{
     int amountOfUpgradeSlots = 3;
     int amountOfContainerSlots = 3;
     IItemHandler inventory;
-
+    AwakenedChestTileEntity entity;
 
     final int MAX_X = AwakenedChestGUI.SIZE_X;
     final int MAX_Y = AwakenedChestGUI.SIZE_Y;
@@ -42,28 +44,31 @@ public class AwakenedChestContainer extends Container{
     public AwakenedChestContainer(IInventory playerInv, AwakenedChestTileEntity tileEntity) {
 
         inventory = tileEntity.inventory;
+        entity = tileEntity;
 
         RenderUpgradeSlots();
 
         RenderContainerSlots();
 
-
         if(tileEntity.amountOfInventorySlots > 0) {
+
             for (int i = 0; i < inventory.getSlots()-amountOfContainerSlots-amountOfUpgradeSlots; i++) {
 
-                addSlotToContainer(
-                        new InventorySlot(
-                        inventory,
-                        amountOfUpgradeSlots+amountOfContainerSlots+i,
+                    addSlotToContainer(
+                            new InventorySlot(
+                                    inventory,
+                                    amountOfUpgradeSlots + amountOfContainerSlots + i,
 
-                        (i%INVENTORY_WIDTH)*SLOT_WIDTH,
-                        ((int)Math.floor(i/INVENTORY_WIDTH))*SLOT_WIDTH
-                        )
-                );
+                                    (i % INVENTORY_WIDTH) * SLOT_WIDTH,
+                                    ((int) Math.floor(i / INVENTORY_WIDTH)) * SLOT_WIDTH
+                            )
+                    );
 
             }//For: make inventory slots
 
         }//Make sure that inventory slots exist at all
+
+
 
     }//Constructor
 

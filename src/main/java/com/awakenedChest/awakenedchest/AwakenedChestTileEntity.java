@@ -1,14 +1,9 @@
 package com.awakenedChest.awakenedchest;
 
-import com.mojang.realmsclient.client.Request;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.client.Minecraft;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -16,21 +11,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import org.lwjgl.Sys;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class AwakenedChestTileEntity extends TileEntity implements ICapabilityProvider, ITickable {
@@ -126,41 +114,41 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
         return super.hasCapability(capability, facing);
     }//bool HasCapability(): set whether it can take stuff from hoppers
 
+    public int GetAmountOfInventorySlots(){
 
-    @Override
-    public void update() {
-        int _amountOfInventorySlots = amountOfInventorySlots;
-        //Reset amountOfInventorySlots so it doesnt keep on going up
-        amountOfInventorySlots = 0;
-        ItemStack buffer[];
         ItemStack[] containerItems = GetFromContainerSlots();
+        int output = 0;
 
         for (ItemStack i : containerItems) {
 
             if (i.getItem() instanceof ItemBlock) {
 
+
                 ItemBlock itemBlock = (ItemBlock) i.getItem();
                 Block block = itemBlock.getBlock();
 
-                    //Switch through all blocks
-                    if (block.getClass() == BlockChest.class) amountOfInventorySlots += 27;
+                //Switch through all blocks
+                if (block.getClass() == BlockChest.class) output += 27;
 
-                    if (block.getClass() == AwakenedChestBlock.class) amountOfInventorySlots += 27;
+                if (block.getClass() == AwakenedChestBlock.class) output += 27;
 
-                    if (block.getClass() == BlockEnderChest.class) amountOfInventorySlots += 100;
-                    //-------------------------
+                if (block.getClass() == BlockEnderChest.class) output += 100;
+                //-------------------------
 
-                }//If: if the item from the stack is a itemBlock, switch through everything
+            }//If: if the item from the stack is a itemBlock, switch through everything
+        }//For: iterate though every container slot
 
-            }//For: iterate though every container slot
+        return output;
 
+    }
 
+    public ItemStack[] BackupInventory(){
 
-            buffer = new ItemStack[amountOfInventorySlots + amountOfUpgradeSlots + amountOfContainerSlots];
+        ItemStack[] buffer = new ItemStack[amountOfInventorySlots + amountOfUpgradeSlots + amountOfContainerSlots];
         if(buffer.length <= inventory.getSlots()){
 
             for (int i = 0; i < buffer.length; i++) {
-                    buffer[i] = inventory.getStackInSlot(i);
+                buffer[i] = inventory.getStackInSlot(i);
             }//for: Set buffer for backup
 
         }//if amount of inventory slots is not smaller then it was before
@@ -171,6 +159,33 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
             }//for: Set buffer for backup
 
         }//if the amount of inventory slots decreased
+
+        return buffer;
+
+    }//BackupInventory()
+
+    public void RecoverFromBackup(){
+
+
+
+    }//RecoverFromBackup():
+
+    @Override
+    public void update() {
+
+        //Variable Declaration---------------------------------
+        int _amountOfInventorySlots = amountOfInventorySlots;
+        //Reset amountOfInventorySlots so it doesnt keep on going up
+        amountOfInventorySlots = 0;
+        ItemStack buffer[];
+        //-----------------------------------------------------
+
+        amountOfInventorySlots = GetAmountOfInventorySlots();
+
+        buffer = BackupInventory();
+
+        //Drop any items that cant fit in the container-------------------------------------------------
+        //todo test if this works
 
         if(_amountOfInventorySlots < amountOfInventorySlots){
 
@@ -186,22 +201,30 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
 
         }//If the amount of inventory slots decrease
 
+        //-----------------------------------------------------------------------------------------------
+
+        //Set size of inventory to be new size
         inventory.setSize(amountOfContainerSlots+amountOfUpgradeSlots+amountOfInventorySlots);
+        //------------------------------------
 
         if(buffer.length >= inventory.getSlots()){
+
             for(int i = 0; i < inventory.getSlots(); i++){
 
-                System.out.println(i);
                 inventory.setStackInSlot(i,buffer[i]);
 
             }//for: Set buffer for backup
+
         }//If the amount of inventory slots increased
+
         if(buffer.length <= inventory.getSlots()){
-            for(int i = 0; i < 2; i++){
+
+            for(int i = 0; i < buffer.length; i++){
 
                 inventory.setStackInSlot(i,buffer[i]);
 
             }//for: Set buffer for backup
+
         }//If the amount of inventory slots increased
 
 

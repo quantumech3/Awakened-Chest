@@ -21,28 +21,35 @@ public class AwakenedChestContainer extends Container{
     final int INVENTORY_WIDTH = 20;
     final int GAP_BETWEEN_UPGRADEANDCONTAINER_SLOTS = SLOT_WIDTH*2;
 
-    public AwakenedChestContainer(IInventory playerInv, AwakenedChestTileEntity tileEntity) {
-
-        inventory = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY,null);
-
-
-        //Upgrade slots are the first 3 slots
-        for(int i = 0;i<amountOfUpgradeSlots;i++){
-
-            addSlotToContainer(new UpgradeSlot(inventory,i,MAX_X,MAX_Y-(SLOT_WIDTH*i)));
-
-        }//For: make upgrade slots
-
-
+    public void RenderContainerSlots(){
         //Container slots are the next 3 slots
         for(int i = amountOfUpgradeSlots; i < amountOfUpgradeSlots+amountOfContainerSlots; i++){
 
             addSlotToContainer(new ContainerSlot(inventory,i,MAX_X, -GAP_BETWEEN_UPGRADEANDCONTAINER_SLOTS +MAX_Y-(SLOT_WIDTH*i)));
 
         }//For: Make container slots
+    }//RenderContainerSlots()
+
+    public void RenderUpgradeSlots(){
+        //Upgrade slots are the first 3 slots
+        for(int i = 0;i<amountOfUpgradeSlots;i++){
+
+            addSlotToContainer(new UpgradeSlot(inventory,i,MAX_X,MAX_Y-(SLOT_WIDTH*i)));
+
+        }//For: make upgrade slots
+    }//RenderUpgradeSlots()
+
+    public AwakenedChestContainer(IInventory playerInv, AwakenedChestTileEntity tileEntity) {
+
+        inventory = tileEntity.inventory;
+
+        RenderUpgradeSlots();
+
+        RenderContainerSlots();
+
 
         if(tileEntity.amountOfInventorySlots > 0) {
-            for (int i = 0; i < tileEntity.amountOfInventorySlots; i++) {
+            for (int i = 0; i < inventory.getSlots()-amountOfContainerSlots-amountOfUpgradeSlots; i++) {
 
                 addSlotToContainer(
                         new InventorySlot(

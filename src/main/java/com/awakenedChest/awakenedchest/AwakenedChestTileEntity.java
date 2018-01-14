@@ -154,18 +154,17 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
 
             }//For: iterate though every container slot
 
-        if(amountOfInventorySlots >= _amountOfInventorySlots) {
+
 
             buffer = new ItemStack[amountOfInventorySlots + amountOfUpgradeSlots + amountOfContainerSlots];
+        if(buffer.length <= inventory.getSlots()){
 
-            for (int i = 0; i < inventory.getSlots(); i++) {
-                buffer[i] = inventory.getStackInSlot(i);
+            for (int i = 0; i < buffer.length; i++) {
+                    buffer[i] = inventory.getStackInSlot(i);
             }//for: Set buffer for backup
 
         }//if amount of inventory slots is not smaller then it was before
         else{
-
-            buffer = new ItemStack[_amountOfInventorySlots + amountOfUpgradeSlots + amountOfContainerSlots];
 
             for (int i = 0; i < inventory.getSlots(); i++) {
                 buffer[i] = inventory.getStackInSlot(i);
@@ -188,18 +187,25 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
         }//If the amount of inventory slots decrease
 
         inventory.setSize(amountOfContainerSlots+amountOfUpgradeSlots+amountOfInventorySlots);
-        System.out.println(amountOfInventorySlots);
 
-        if(amountOfInventorySlots >= _amountOfInventorySlots){
-            for(int i = 0; i < buffer.length; i++){
-                inventory.setStackInSlot(i,buffer[i]);
-            }//for: Set buffer for backup
-        }//If the amount of inventory slots increased
-        if(amountOfInventorySlots <= _amountOfInventorySlots){
+        if(buffer.length >= inventory.getSlots()){
             for(int i = 0; i < inventory.getSlots(); i++){
+
+                System.out.println(i);
                 inventory.setStackInSlot(i,buffer[i]);
+
             }//for: Set buffer for backup
         }//If the amount of inventory slots increased
+        if(buffer.length <= inventory.getSlots()){
+            for(int i = 0; i < 2; i++){
+
+                inventory.setStackInSlot(i,buffer[i]);
+
+            }//for: Set buffer for backup
+        }//If the amount of inventory slots increased
+
+
+
 
     }//void Update
 

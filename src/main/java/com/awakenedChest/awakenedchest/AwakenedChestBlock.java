@@ -36,6 +36,7 @@ public class AwakenedChestBlock extends BlockContainer{
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
+
         if(!worldIn.isRemote) {
             playerIn.openGui(AwakenedChest.MODID, AwakenedChestGuiHandler.MOD_TILE_ENTITY_GUI, worldIn, pos.getX(), pos.getY(), pos.getZ());
             return true;

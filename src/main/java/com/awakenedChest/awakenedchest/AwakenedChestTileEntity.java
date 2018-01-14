@@ -142,9 +142,22 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
 
     }
 
+    public ItemStack[] InitializeBufferWith(ItemStack[] buffer, ItemStack item){
+
+        for(int i = 0; i < buffer.length; i++){
+            buffer[i] = item;
+        }
+
+        return buffer;
+
+    }
+
     public ItemStack[] BackupInventory(){
 
         ItemStack[] buffer = new ItemStack[amountOfInventorySlots + amountOfUpgradeSlots + amountOfContainerSlots];
+
+        buffer = InitializeBufferWith(buffer,ItemStack.EMPTY);
+
         if(buffer.length <= inventory.getSlots()){
 
             for (int i = 0; i < buffer.length; i++) {
@@ -152,38 +165,13 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
             }//for: Set buffer for backup
 
         }//if amount of inventory slots is not smaller then it was before
-        else{
 
-            for (int i = 0; i < inventory.getSlots(); i++) {
-                buffer[i] = inventory.getStackInSlot(i);
-            }//for: Set buffer for backup
-
-        }//if the amount of inventory slots decreased
 
         return buffer;
 
     }//BackupInventory()
 
-    public void RecoverFromBackup(){
-
-
-
-    }//RecoverFromBackup():
-
-    @Override
-    public void update() {
-
-        //Variable Declaration---------------------------------
-        int _amountOfInventorySlots = amountOfInventorySlots;
-        //Reset amountOfInventorySlots so it doesnt keep on going up
-        amountOfInventorySlots = 0;
-        ItemStack buffer[];
-        //-----------------------------------------------------
-
-        amountOfInventorySlots = GetAmountOfInventorySlots();
-
-        buffer = BackupInventory();
-
+    public void DropAnyExessItems(int _amountOfInventorySlots, ItemStack[] buffer){
         //Drop any items that cant fit in the container-------------------------------------------------
         //todo test if this works
 
@@ -202,10 +190,36 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
         }//If the amount of inventory slots decrease
 
         //-----------------------------------------------------------------------------------------------
+    }
+
+    public void RecoverFromBackup(){
+
+
+
+    }//RecoverFromBackup():
+
+
+
+    @Override
+    public void update() {
+
+        //Variable Declaration---------------------------------
+        int _amountOfInventorySlots = amountOfInventorySlots;
+        ItemStack buffer[] = BackupInventory();
+        //Reset amountOfInventorySlots so it doesnt keep on going up
+        amountOfInventorySlots = 0;
+        //-----------------------------------------------------
+
+        amountOfInventorySlots = GetAmountOfInventorySlots();
+
 
         //Set size of inventory to be new size
         inventory.setSize(amountOfContainerSlots+amountOfUpgradeSlots+amountOfInventorySlots);
         //------------------------------------
+
+
+
+        //Set the new inventory to the backup------------------------
 
         if(buffer.length >= inventory.getSlots()){
 
@@ -217,7 +231,7 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
 
         }//If the amount of inventory slots increased
 
-        if(buffer.length <= inventory.getSlots()){
+        else if(buffer.length <= inventory.getSlots()){
 
             for(int i = 0; i < buffer.length; i++){
 
@@ -227,7 +241,7 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
 
         }//If the amount of inventory slots increased
 
-
+        //Set the new inventory to the backup------------------------
 
 
     }//void Update

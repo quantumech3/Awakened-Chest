@@ -101,9 +101,10 @@ public class AwakenedChestContainer extends Container{
 
     public AwakenedChestContainer(IInventory playerInv, AwakenedChestTileEntity tileEntity) {
 
+        amountOfUpgradeSlots = tileEntity.amountOfUpgradeSlots;
+        amountOfContainerSlots = tileEntity.amountOfContainerSlots;
         inventory = tileEntity.inventory;
         entity = tileEntity;
-
 
         RenderPlayerInventory(playerInv);
         RenderPlayerBar(playerInv);

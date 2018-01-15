@@ -46,12 +46,12 @@ public class AwakenedChestContainer extends Container{
 
     public void RenderPlayerInventory(IInventory playerInv){
 
-        for (int i = 0; i < playerInv.getSizeInventory(); i++) {
+        for (int i = 0; i < 36; i++) {
 
             addSlotToContainer(
                     new PlayerSlot(
                             playerInv,
-                            amountOfUpgradeSlots + amountOfContainerSlots + i,
+                            i,
 
                             (i % 9) * SLOT_WIDTH,
                             (((int) Math.floor(i / 9)) * SLOT_WIDTH) + MAX_Y

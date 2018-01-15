@@ -16,6 +16,9 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.lwjgl.Sys;
@@ -177,8 +180,9 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
 
     }//BackupInventory()
 
+
     public void DropAnyExessItems(int _amountOfInventorySlots){
-        //Drop any items that cant fit in the container-------------------------------------------------
+
         //todo test if this works
 
 
@@ -187,14 +191,14 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
             int ending = amountOfContainerSlots + amountOfUpgradeSlots + _amountOfInventorySlots - 1;
 
             for(int i = beginning; i <= ending; i++ ){
-                System.out.println(i);
-                InventoryHelper.spawnItemStack(Minecraft.getMinecraft().world, pos.getX(),pos.getY(),pos.getZ(), inventory.getStackInSlot(i));
+
+                InventoryHelper.spawnItemStack(world, pos.getX()+1,pos.getY(),pos.getZ(), inventory.getStackInSlot(i));
                 inventory.setStackInSlot(i,ItemStack.EMPTY);
 
             }//go through each slot that isnt there anymore and drop them
 
 
-        //-----------------------------------------------------------------------------------------------
+
     }
 
     public void RecoverFromBackup(){

@@ -23,7 +23,7 @@ public class AwakenedChestContainer extends Container{
     final int MAX_X = AwakenedChestGUI.SIZE_X;
     final int MAX_Y = AwakenedChestGUI.SIZE_Y;
     final int SLOT_WIDTH = 16;
-    final int INVENTORY_WIDTH = 20;
+    final int INVENTORY_WIDTH = 9;
     final int GAP_BETWEEN_UPGRADEANDCONTAINER_SLOTS = SLOT_WIDTH*2;
 
     public void RenderContainerSlots(){
@@ -46,7 +46,7 @@ public class AwakenedChestContainer extends Container{
 
     public void RenderPlayerInventory(IInventory playerInv){
 
-        for (int i = 0; i < 36; i++) {
+        for (int i = 9; i < 36; i++) {
 
             addSlotToContainer(
                     new PlayerSlot(
@@ -54,7 +54,7 @@ public class AwakenedChestContainer extends Container{
                             i,
 
                             (i % 9) * SLOT_WIDTH,
-                            (((int) Math.floor(i / 9)) * SLOT_WIDTH) + MAX_Y
+                            (((int) Math.floor(i / 9)) * SLOT_WIDTH) + MAX_Y - (SLOT_WIDTH * 5) + (SLOT_WIDTH * 5)
                     )
             );
 
@@ -62,36 +62,64 @@ public class AwakenedChestContainer extends Container{
 
     }
 
+    public void RenderPlayerBar(IInventory playerInv){
+
+        for (int i = 0; i < 9; i++) {
+
+            addSlotToContainer(
+                    new PlayerSlot(
+                            playerInv,
+                            i,
+
+                            (i % 9) * SLOT_WIDTH,
+                            (((int) Math.floor(i / 9)) * SLOT_WIDTH) + MAX_Y + (SLOT_WIDTH * 5)
+                    )
+            );
+
+        }//For: make inventory slots
+
+    }//RenderPlayerBar()
+
+    public void RenderStorageInventory(AwakenedChestTileEntity tileEntity) {
+        if (tileEntity.amountOfInventorySlots > 0) {
+
+            for (int i = 0; i < tileEntity.amountOfInventorySlots - amountOfContainerSlots - amountOfUpgradeSlots; i++) {
+
+                addSlotToContainer(
+                        new InventorySlot(
+                                inventory,
+                                amountOfUpgradeSlots + amountOfContainerSlots + i,
+
+                                (i % INVENTORY_WIDTH) * SLOT_WIDTH,
+                                ((int) Math.floor(i / INVENTORY_WIDTH)) * SLOT_WIDTH
+                        )
+                );
+
+            }//For: make inventory slots
+        }
+    }
+
     public AwakenedChestContainer(IInventory playerInv, AwakenedChestTileEntity tileEntity) {
 
         inventory = tileEntity.inventory;
         entity = tileEntity;
 
+
+        RenderPlayerInventory(playerInv);
+        RenderPlayerBar(playerInv);
+
         RenderUpgradeSlots();
 
         RenderContainerSlots();
 
-        if(tileEntity.amountOfInventorySlots > 0) {
+        RenderStorageInventory(entity);
 
-            for (int i = 0; i < tileEntity.amountOfInventorySlots-amountOfContainerSlots-amountOfUpgradeSlots; i++) {
-
-                    addSlotToContainer(
-                            new InventorySlot(
-                                    inventory,
-                                    amountOfUpgradeSlots + amountOfContainerSlots + i,
-
-                                    (i % INVENTORY_WIDTH) * SLOT_WIDTH,
-                                    ((int) Math.floor(i / INVENTORY_WIDTH)) * SLOT_WIDTH
-                            )
-                    );
-
-            }//For: make inventory slots
-
-        }//Make sure that inventory slots exist at all
-
-        RenderPlayerInventory(playerInv);
 
     }//Constructor
+
+
+
+
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
@@ -103,5 +131,7 @@ public class AwakenedChestContainer extends Container{
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {return true;}
+
+
 
 }//class AwakenedChestContainer

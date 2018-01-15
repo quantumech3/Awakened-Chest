@@ -53,6 +53,10 @@ public class AwakenedChestBlock extends BlockContainer{
         return false;
     }
 
+    @Override
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
+        return 1;
+    }
 
     @Nullable
     @Override

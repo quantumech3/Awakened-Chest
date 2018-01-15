@@ -18,12 +18,14 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.lwjgl.Sys;
 
 import javax.annotation.Nullable;
 
 public class AwakenedChestTileEntity extends TileEntity implements ICapabilityProvider, ITickable {
 
     public int amountOfInventorySlots = 0;
+    public int _amountOfInventorySlots = 0;
     public int amountOfUpgradeSlots = 3;
     public int amountOfContainerSlots = 3;
     BlockPos playerPos;
@@ -175,23 +177,22 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
 
     }//BackupInventory()
 
-    public void DropAnyExessItems(int _amountOfInventorySlots, ItemStack[] buffer){
+    public void DropAnyExessItems(int _amountOfInventorySlots){
         //Drop any items that cant fit in the container-------------------------------------------------
         //todo test if this works
 
-        if(_amountOfInventorySlots < amountOfInventorySlots){
+
 
             int beginning = amountOfContainerSlots + amountOfUpgradeSlots + amountOfInventorySlots - 1;
             int ending = amountOfContainerSlots + amountOfUpgradeSlots + _amountOfInventorySlots - 1;
 
             for(int i = beginning; i <= ending; i++ ){
-
-                InventoryHelper.spawnItemStack(Minecraft.getMinecraft().world, pos.getX(),pos.getY(),pos.getZ(), buffer[i]);
-                buffer[i] = ItemStack.EMPTY;
+                System.out.println(i);
+                InventoryHelper.spawnItemStack(Minecraft.getMinecraft().world, pos.getX(),pos.getY(),pos.getZ(), inventory.getStackInSlot(i));
+                inventory.setStackInSlot(i,ItemStack.EMPTY);
 
             }//go through each slot that isnt there anymore and drop them
 
-        }//If the amount of inventory slots decrease
 
         //-----------------------------------------------------------------------------------------------
     }
@@ -207,7 +208,12 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
     @Override
     public void update() {
 
+        _amountOfInventorySlots = amountOfInventorySlots;
         amountOfInventorySlots = GetAmountOfInventorySlots();
+
+        if(_amountOfInventorySlots > amountOfInventorySlots){
+            DropAnyExessItems(_amountOfInventorySlots);
+        }
 
     }//void Update
 

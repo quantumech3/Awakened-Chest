@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -17,11 +18,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.lwjgl.Sys;
+import scala.collection.parallel.ParIterableLike;
 
 import javax.annotation.Nullable;
 
@@ -181,6 +184,15 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
     }//BackupInventory()
 
 
+    public void DropItem(ItemStack stack, BlockPos pos){
+
+        if(!getWorld().isRemote) {
+            EntityItem entityItem = new EntityItem(getWorld(), pos.getX(), pos.getY(), pos.getZ(), stack);
+            getWorld().spawnEntity(entityItem);
+        }
+
+    }
+
     public void DropAnyExessItems(int _amountOfInventorySlots){
 
         //todo test if this works
@@ -192,7 +204,7 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
 
             for(int i = beginning; i <= ending; i++ ){
 
-                InventoryHelper.spawnItemStack(world, pos.getX()+1,pos.getY(),pos.getZ(), inventory.getStackInSlot(i));
+                DropItem(inventory.getStackInSlot(i),pos);
                 inventory.setStackInSlot(i,ItemStack.EMPTY);
 
             }//go through each slot that isnt there anymore and drop them

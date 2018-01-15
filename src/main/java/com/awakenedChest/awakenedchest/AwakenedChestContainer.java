@@ -118,9 +118,6 @@ public class AwakenedChestContainer extends Container{
     }//Constructor
 
 
-
-
-
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 

@@ -1,12 +1,15 @@
 package com.awakenedChest.awakenedchest;
 
+import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import org.lwjgl.Sys;
 
 public class AwakenedChestContainer extends Container{
@@ -41,6 +44,24 @@ public class AwakenedChestContainer extends Container{
         }//For: make upgrade slots
     }//RenderUpgradeSlots()
 
+    public void RenderPlayerInventory(IInventory playerInv){
+
+        for (int i = 0; i < playerInv.getSizeInventory(); i++) {
+
+            addSlotToContainer(
+                    new PlayerSlot(
+                            playerInv,
+                            amountOfUpgradeSlots + amountOfContainerSlots + i,
+
+                            (i % 9) * SLOT_WIDTH,
+                            (((int) Math.floor(i / 9)) * SLOT_WIDTH) + MAX_Y
+                    )
+            );
+
+        }//For: make inventory slots
+
+    }
+
     public AwakenedChestContainer(IInventory playerInv, AwakenedChestTileEntity tileEntity) {
 
         inventory = tileEntity.inventory;
@@ -52,7 +73,7 @@ public class AwakenedChestContainer extends Container{
 
         if(tileEntity.amountOfInventorySlots > 0) {
 
-            for (int i = 0; i < inventory.getSlots()-amountOfContainerSlots-amountOfUpgradeSlots; i++) {
+            for (int i = 0; i < tileEntity.amountOfInventorySlots-amountOfContainerSlots-amountOfUpgradeSlots; i++) {
 
                     addSlotToContainer(
                             new InventorySlot(
@@ -68,11 +89,17 @@ public class AwakenedChestContainer extends Container{
 
         }//Make sure that inventory slots exist at all
 
-
+        RenderPlayerInventory(playerInv);
 
     }//Constructor
 
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
 
+        //add shiftclick inventory capabilitys
+        return ItemStack.EMPTY;
+
+    }
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {return true;}

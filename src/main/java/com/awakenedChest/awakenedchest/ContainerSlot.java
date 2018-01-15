@@ -31,7 +31,7 @@ public class ContainerSlot extends SlotItemHandler{
     @Override
     public boolean isEnabled() {
 
-        return isEnabled;
+        return true;
     }
 
     @Override public TextureAtlasSprite getBackgroundSprite() { return AwakenedChest.containerSlotTexture; }

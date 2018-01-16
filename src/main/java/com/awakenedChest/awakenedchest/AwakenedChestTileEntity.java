@@ -2,10 +2,13 @@ package com.awakenedChest.awakenedchest;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -195,10 +198,6 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
 
     public void DropAnyExessItems(int _amountOfInventorySlots){
 
-        //todo test if this works
-
-
-
             int beginning = amountOfContainerSlots + amountOfUpgradeSlots + amountOfInventorySlots - 1;
             int ending = amountOfContainerSlots + amountOfUpgradeSlots + _amountOfInventorySlots - 1;
 
@@ -219,7 +218,23 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
 
     }//RecoverFromBackup():
 
+    public boolean IsContainer(Block block){
 
+
+        if(block instanceof BlockContainer){
+            return true;
+        }
+
+        return false;
+    }//IsContainer()
+
+    public boolean IsItemBlock(Item item){
+
+        if(item instanceof ItemBlock){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void update() {
@@ -231,7 +246,10 @@ public class AwakenedChestTileEntity extends TileEntity implements ICapabilityPr
             DropAnyExessItems(_amountOfInventorySlots);
         }
 
+
+
     }//void Update
+
 
 }//class AwakenedChestTileEntity
 

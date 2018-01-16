@@ -14,17 +14,19 @@ import org.lwjgl.Sys;
 
 public class AwakenedChestContainer extends Container{
 
-    int page = 0;
     int amountOfUpgradeSlots = 3;
     int amountOfContainerSlots = 3;
     IItemHandler inventory;
     AwakenedChestTileEntity entity;
+
+    public int page = 0;
 
     final int MAX_X = AwakenedChestGUI.SIZE_X;
     final int MAX_Y = AwakenedChestGUI.SIZE_Y;
     final int SLOT_WIDTH = 16;
     final int INVENTORY_WIDTH = 9;
     final int GAP_BETWEEN_UPGRADEANDCONTAINER_SLOTS = SLOT_WIDTH*2;
+    final int SLOTS_ON_PAGE = 100;
 
     public void RenderContainerSlots(){
         //Container slots are the next 3 slots
@@ -88,10 +90,14 @@ public class AwakenedChestContainer extends Container{
                 addSlotToContainer(
                         new InventorySlot(
                                 inventory,
-                                amountOfUpgradeSlots + amountOfContainerSlots + i,
+
+                                //limit the container slots that are being displayed to the ones in the chest
+                                //fixme -3 might not be nessasary
+                                Math.min(amountOfUpgradeSlots + amountOfContainerSlots + (page*SLOTS_ON_PAGE) + i,
+                                        amountOfUpgradeSlots + amountOfContainerSlots + tileEntity.amountOfInventorySlots-3),
 
                                 (i % INVENTORY_WIDTH) * SLOT_WIDTH,
-                                ((int) Math.floor(i / INVENTORY_WIDTH)) * SLOT_WIDTH
+                                ((int) Math.floor(i / INVENTORY_WIDTH)) * SLOT_WIDTH - (SLOT_WIDTH)
                         )
                 );
 
@@ -99,7 +105,9 @@ public class AwakenedChestContainer extends Container{
         }
     }
 
-    public AwakenedChestContainer(IInventory playerInv, AwakenedChestTileEntity tileEntity) {
+    public AwakenedChestContainer(IInventory playerInv, AwakenedChestTileEntity tileEntity, int _page) {
+
+        page = _page;
 
         amountOfUpgradeSlots = tileEntity.amountOfUpgradeSlots;
         amountOfContainerSlots = tileEntity.amountOfContainerSlots;
@@ -117,7 +125,6 @@ public class AwakenedChestContainer extends Container{
 
 
     }//Constructor
-
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
